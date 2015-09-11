@@ -1,12 +1,32 @@
 // ! ! !
 // Three Bugs
 
-var arrayAtticus = ["Atticus", "2405", "47000", 3];
-var arrayJem = ["Jem", "62347", "63500", 4];
-var arrayBoo = ["Boo", "11435", "54000", 3];
-var arrayScout = ["Scout", "6243", "74750", 5];
+var Atticus = {
+              name: "Atticus",
+              id: "2405",
+              annualSalary: "47000",
+              rating: 3
+            };
+var Jem = {
+            name: "Jem",
+            id: "62347", 
+            annualSalary: "63500",
+            rating: 4
+          };
+var Boo = {
+          name:"Boo",
+          id: "11435",
+          annualSalary: "54000",
+          rating: 3
+        };
+var Scout = {
+            name: "Scout",
+            id: "6243",
+            annualSalary: "74750",
+            rating: 5
+          };
 
-var array = [arrayAtticus, arrayJem, arrayBoo, arrayScout];
+var myList = [Atticus, Jem, Boo, Scout];
 
 //Create variables used to write to the DOM
 var newEl, newText, position;
@@ -15,38 +35,40 @@ position = document.getElementById('content');
 
 //Loop the array, extracting each array and writing information to the DOM
 //Note that the information is not 'clean'
-for(var i = 0; i < array.length; i++){
+for(var i = 0; i < myList.length; i++){
   //added array[i] in the calculateSTI
-	array[i] = calculateSTI(array[i]);
+	myList[i] = calculateSTI(myList[i]);
  	newEl = document.createElement('li');
+  console.log(myList[i]);
 
-  
-	newText = document.createTextNode(array[i].join(", "));
+  //adding .join will help serapte the array. You can put commas, ands, or pipes in the parameters.
+	newText = document.createTextNode(myList[i]);
 	newEl.appendChild(newText);
 	position.appendChild(newEl);
 }
 
 
-function calculateSTI(array){
-  var newArray = [];
+function calculateSTI(employee){
+  var newObject = {};
 
-  newArray[0] = array[0];
+  newObject.name = employee.name;
 
-  var employeeNumber = array[1];
-  var baseSalary = array[2];
-  var reviewScore = array[3];
+  var employeeNumber = employee.id;
+  var baseSalary = employee.annualSalary;
+  var reviewScore = employee.rating;
 
   var bonus = getBaseSTI(reviewScore) + getYearAdjustment(employeeNumber) - getIncomeAdjustment(baseSalary);
   if(bonus > 0.13){
     bonus = 0.13;
   }
 
-  newArray[1] = bonus;
-  //added parseInt  Math.round
-  newArray[2] = parseInt(baseSalary * (1.0 + bonus));
-  newArray[3] = baseSalary * bonus;
-  console.log(newArray[0] + " " + newArray[1] + " " + newArray[2] + " " + newArray[3]);
-  return newArray;
+  newObject.id = bonus;
+  //added parseInt  Math.round - communicates what your doing
+  newObject.annualSalary = parseInt(baseSalary * (1.0 + bonus));
+  //add
+  newObject.rating = Math.round(baseSalary * bonus);
+  console.log(newObject.name + " " + newObject.id + " " + newObject.annualSalary + " " + newObject.rating);
+  return newObject;
 }
 
 function getBaseSTI(reviewScore){
@@ -68,7 +90,7 @@ function getBaseSTI(reviewScore){
       basePercent = 0.10;
       break;
   }
-  //removed - 1;
+  //removed - 1; returning with additional math is bad practice
   return basePercent;
 }
 
